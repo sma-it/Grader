@@ -10,7 +10,15 @@ namespace GRader
     {
         static void Main(string[] args)
         {
-            var reader = new Parser("correction.xml");
+            Parser reader = null;
+            if (args.Length > 0)
+            {
+                reader = new Parser(args[0]);
+            } else
+            {
+                reader = new Parser("correction.xml");
+            }
+
             reader.Parse();
             if (reader.IsConsistent())
             {
