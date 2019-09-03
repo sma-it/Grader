@@ -143,7 +143,6 @@ namespace GRader
                 string name = test.Name;
                 while (name.Length < nameLength) name += " ";
 
-                string feedback;
                 if (test.Passed)
                 {
                     comments.Add(name + ": " + test.Feedback);
@@ -151,7 +150,10 @@ namespace GRader
                 else 
                 {
                     comments.Add(name + ": -" + test.Penalty);
-                    comments.Add(test.Feedback);
+                    foreach(var line in test.Feedback)
+                    {
+                        comments.Add(line);
+                    }
                 }
             }
             PrintLongComment(comments.ToArray());

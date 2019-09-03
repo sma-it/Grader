@@ -16,8 +16,8 @@ namespace GRader
         private string name;
         public string Name { get => name; }
 
-        private string feedback;
-        public string Feedback { get => feedback; }
+        private List<string> feedback = new List<string>();
+        public List<string> Feedback { get => feedback; }
 
         private int penalty;
         public int Penalty { get => penalty; }
@@ -38,17 +38,33 @@ namespace GRader
                 {
                     string penaltyString = failure.Substring(0, index);
                     penalty = Convert.ToInt32(penaltyString);
-                    feedback = "  " + failure.Substring(index + 1).Trim();
+                    string allFeedback = failure.Substring(index + 1).Trim();
+                    var lines = allFeedback.Split(new[] { '\r', '\n' });
+                    foreach (var line in lines)
+                    {
+                        var trimmed = line.Trim();
+                        if(trimmed.Length > 0) feedback.Add("->  " + trimmed);
+                    }
                 } catch
                 {
                     penalty = 1;
-                    feedback = failure;
+                    var lines = failure.Split(new[] { '\r', '\n' });
+                    foreach (var line in lines)
+                    {
+                        var trimmed = line.Trim();
+                        if (trimmed.Length > 0) feedback.Add("->  " + trimmed);
+                    }
                 }
                 
             } else
             {
                 penalty = 1;
-                feedback = failure;
+                var lines = failure.Split(new[] { '\r', '\n' });
+                foreach (var line in lines)
+                {
+                    var trimmed = line.Trim();
+                    if (trimmed.Length > 0) feedback.Add("->  " + trimmed);
+                }
             }
         }
 
@@ -56,7 +72,7 @@ namespace GRader
         {
             passed = true;
             penalty = 0;
-            feedback = "OK";
+            feedback.Add("OK");
         }
     }
 }
