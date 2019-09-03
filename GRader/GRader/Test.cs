@@ -59,7 +59,7 @@ namespace GRader
             foreach (var line in lines)
             {
                 var trimmed = line.Trim();
-                if (trimmed.Length > 0) feedback.Add(">  " + trimmed);
+                if (trimmed.Length > 0) feedback.Add("| " + trimmed);
             }
         }
 
