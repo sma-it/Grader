@@ -145,7 +145,7 @@ namespace GRader
 
                 if (test.Passed)
                 {
-                    comments.Add(name + ": " + test.Feedback);
+                    comments.Add(name + ": " + test.Feedback[0]);
                 }
                 else 
                 {

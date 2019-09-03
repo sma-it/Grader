@@ -10,7 +10,7 @@ namespace GRader
     {
         public Test(string name)
         {
-            this.name = name;
+            this.name = "-" + name;
         }
 
         private string name;
@@ -39,32 +39,27 @@ namespace GRader
                     string penaltyString = failure.Substring(0, index);
                     penalty = Convert.ToInt32(penaltyString);
                     string allFeedback = failure.Substring(index + 1).Trim();
-                    var lines = allFeedback.Split(new[] { '\r', '\n' });
-                    foreach (var line in lines)
-                    {
-                        var trimmed = line.Trim();
-                        if(trimmed.Length > 0) feedback.Add("->  " + trimmed);
-                    }
+                    addFeedbackLines(allFeedback);
                 } catch
                 {
                     penalty = 1;
-                    var lines = failure.Split(new[] { '\r', '\n' });
-                    foreach (var line in lines)
-                    {
-                        var trimmed = line.Trim();
-                        if (trimmed.Length > 0) feedback.Add("->  " + trimmed);
-                    }
+                    addFeedbackLines(failure);
                 }
                 
             } else
             {
                 penalty = 1;
-                var lines = failure.Split(new[] { '\r', '\n' });
-                foreach (var line in lines)
-                {
-                    var trimmed = line.Trim();
-                    if (trimmed.Length > 0) feedback.Add("->  " + trimmed);
-                }
+                addFeedbackLines(failure);
+            }
+        }
+
+        private void addFeedbackLines(string feedbackLines)
+        {
+            var lines = feedbackLines.Split(new[] { '\r', '\n' });
+            foreach (var line in lines)
+            {
+                var trimmed = line.Trim();
+                if (trimmed.Length > 0) feedback.Add(">  " + trimmed);
             }
         }
 
