@@ -72,7 +72,7 @@ namespace GRader
 
         private void parseTests(XmlNode node)
         {
-            string name = node.Attributes["fullname"].Value;
+            string name = new TestName(node).Name;
             string result = node.Attributes["result"].Value;
 
             var test = new Test(name);
@@ -101,7 +101,7 @@ namespace GRader
             {
                 if (child.Name == "message")
                 {
-                    return child.InnerText.Split(new[] { '\r', '\n' }).FirstOrDefault();
+                    return child.InnerText;
                 }
             }
 
@@ -136,17 +136,38 @@ namespace GRader
         {
             List<string> comments = new List<string>();
 
+            int nameLength = getLongestTestName();
+
             foreach(var test in tests)
             {
-                string feedback = test.Name + ": " + test.Feedback;
-                if (!test.Passed)
-                {
-                    feedback += " (-" + test.Penalty + ")";
-                }
+                string name = test.Name;
+                while (name.Length < nameLength) name += " ";
 
-                comments.Add(feedback);
+                string feedback;
+                if (test.Passed)
+                {
+                    comments.Add(name + ": " + test.Feedback);
+                }
+                else 
+                {
+                    comments.Add(name + ": -" + test.Penalty);
+                    comments.Add(test.Feedback);
+                }
             }
             PrintLongComment(comments.ToArray());
+        }
+
+        private int getLongestTestName()
+        {
+            int longest = 0;
+            foreach(var test in tests)
+            {
+                if(test.Name.Length > longest)
+                {
+                    longest = test.Name.Length;
+                }
+            }
+            return longest;
         }
 
         public void DisplayGrade()

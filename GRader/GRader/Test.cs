@@ -27,14 +27,18 @@ namespace GRader
 
         public void SetFailed(string failure)
         {
+            failure = failure.Trim();
             passed = false;
             var result = failure.Split(new[] { ':' });
-            if (result.Length == 2)
+            int index = failure.IndexOf(':');
+            
+            if (result.Length != -1)
             {
                 try
                 {
-                    penalty = Convert.ToInt32(result[0]);
-                    feedback = result[1];
+                    string penaltyString = failure.Substring(0, index);
+                    penalty = Convert.ToInt32(penaltyString);
+                    feedback = "  " + failure.Substring(index + 1).Trim();
                 } catch
                 {
                     penalty = 1;

@@ -25,7 +25,7 @@ namespace GRader
                 reader.DisplayComments();
                 reader.DisplayGrade();
             }
-            //Console.ReadKey();
+            Console.ReadKey();
         }
     }
 }
